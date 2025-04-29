@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "title": "Metadata",
+  "type": "object",
+  "properties": {
+    "start_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "finish_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "start_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "end_id": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "posts": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/ScrapedPost" }
+    }
+  },
+  "required": ["start_time", "finish_time", "start_id", "end_id", "posts"],
+  "$defs": {
+    "ScrapedPost": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "minimum": 0 },
+        "created_at": { "type": "string", "format": "date-time" },
+        "updated_at": { "type": ["string", "null"], "format": "date-time" },
+        "file": { "$ref": "#/$defs/ScrapedPostFile" },
+        "score": { "$ref": "#/$defs/ScrapedPostScore" },
+        "tags": { "$ref": "#/$defs/ScrapedPostTags" },
+        "locked_tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rating": { "$ref": "#/$defs/ScrapedPostRating" },
+        "fav_count": { "type": "integer", "minimum": 0 },
+        "sources": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "pools": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "relationships": { "$ref": "#/$defs/ScrapedPostRelationships" },
+        "approver_id": { "type": ["integer", "null"], "minimum": 0 },
+        "uploader_id": { "type": "integer", "minimum": 0 },
+        "description": { "type": "string" },
+        "comment_count": { "type": "integer", "minimum": 0 }
+      },
+      "required": [
+        "id", "created_at", "file", "score", "tags", "locked_tags",
+        "rating", "fav_count", "sources", "pools", "relationships",
+        "uploader_id", "description", "comment_count"
+      ]
+    },
+
+    "ScrapedPostFile": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer", "minimum": 0 },
+        "height": { "type": "integer", "minimum": 0 },
+        "extension": {
+          "type": "string",
+          "enum": ["jpg", "png", "gif", "swf", "webm"]
+        },
+        "size": { "type": "integer", "minimum": 0 },
+        "md5": { "type": "string" },
+        "url": { "type": ["string", "null"], "format": "uri" }
+      },
+      "required": ["width", "height", "extension", "size", "md5", "url"]
+    },
+
+    "ScrapedPostScore": {
+      "type": "object",
+      "properties": {
+        "up": { "type": "integer" },
+        "down": { "type": "integer" },
+        "total": { "type": "integer" }
+      },
+      "required": ["up", "down", "total"]
+    },
+
+    "ScrapedPostTags": {
+      "type": "object",
+      "properties": {
+        "general": { "type": "array", "items": { "type": "string" } },
+        "species": { "type": "array", "items": { "type": "string" } },
+        "character": { "type": "array", "items": { "type": "string" } },
+        "artist": { "type": "array", "items": { "type": "string" } },
+        "invalid": { "type": "array", "items": { "type": "string" } },
+        "lore": { "type": "array", "items": { "type": "string" } },
+        "meta": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": [
+        "general", "species", "character", "artist", "invalid", "lore", "meta"
+      ]
+    },
+
+    "ScrapedPostRating": {
+      "type": "string",
+      "enum": ["s", "q", "e"]
+    },
+
+    "ScrapedPostRelationships": {
+      "type": "object",
+      "properties": {
+        "parent_id": { "type": ["integer", "null"], "minimum": 0 },
+        "has_children": { "type": "boolean" },
+        "children": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 }
+        }
+      },
+      "required": ["parent_id", "has_children", "children"]
+    }
+  }
+}
